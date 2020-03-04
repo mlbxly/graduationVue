@@ -6,6 +6,7 @@ import router from './router'
 //引入Element-ui
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import store from './store'
 //引入axios
 import axios from 'axios'
 Vue.prototype.$axios = axios
@@ -19,11 +20,28 @@ Vue.config.productionTip = false
 
 Vue.use(ElementUI)
 
+router.beforeEach((to,from,next) => {
+  if(to.meta.requireAuth){
+    if(store.state.token){
+      next();
+    }else{
+      next({
+        path:'/login',
+        query: {redirect:to.fullPath}
+      })
+    }
+  }else {
+    next();
+  }
+})
+
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   render: h => h(App),
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

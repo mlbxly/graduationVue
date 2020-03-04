@@ -49,6 +49,8 @@
          identity: this.loginForm.identity
        }).then(successResponse => {
          if(successResponse.data.code == 0){
+           this.$store.commit('GET_USER',this.loginForm)
+           this.$store.commit('USER_TOKEN',JSON.stringify(successResponse.data.data))
            this.$router.replace({path: '/home'})
          }else{
            confirm("登陆失败，用户名或密码错误")
