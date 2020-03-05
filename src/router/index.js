@@ -3,6 +3,7 @@ import Router from 'vue-router'
 //导入编写的组件
 import Login from '@/components/Login'
 import Home from '@/components/Home'
+import Member from '@/member/Member'
 
 Vue.use(Router)
 
@@ -15,11 +16,19 @@ export default new Router({
     },
     {
       name: 'Home',
-      path:'/home',
-      component:Home,
-      meta: {
-        requireAuth: true
-      }
+      path: '/home',
+      component: Home,
+      redirect: '/member',
+      children: [
+        {
+          path: '/member',
+          name: 'Member',
+          component: Member,
+          meta:{
+            requireAuth: true
+          }
+        }
+      ]
     }
   ]
 })
