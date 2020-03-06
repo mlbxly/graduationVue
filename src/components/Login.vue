@@ -48,7 +48,7 @@
          password: this.loginForm.password,
          identity: this.loginForm.identity
        }).then(successResponse => {
-         if(successResponse.data.code == 0){
+         if(successResponse.data.code === 0){
            this.$store.commit('GET_USER',this.loginForm)
            this.$store.commit('USER_TOKEN',JSON.stringify(successResponse.data.data))
            this.$router.replace({path: '/home'})
@@ -75,9 +75,11 @@
     width: 100%;
     background-size: cover;
     position: fixed;
+    top: 0px;
+    left: 0px;
   }
   body{
-    margin: -5px 0px;
+    margin: 0px;
   }
   .login-container {
     border-radius: 15px;
