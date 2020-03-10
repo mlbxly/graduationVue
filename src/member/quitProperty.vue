@@ -32,13 +32,13 @@
           color: ['#3398DB'],
           xAxis: {
             type: 'category',
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+            data: []
           },
           yAxis: {
             type: 'value'
           },
           series: [{
-            data: [82, 93, 90, 93, 129, 133, 132],
+            data: [],
             type: 'bar',
             barWidth : 28,
             smooth: true
@@ -51,10 +51,19 @@
           }).catch(function(error) {
             alert(error)
           })
+        this.$axios.post('/property/test').then(res => {
+          this.orgOptions.xAxis.data = res.data.data
+        }).catch(function(error) {
+          alert(error)
+        })
       }
     }
 </script>
 
 <style>
-
+.hello{
+  position: fixed;
+  bottom: 0%;
+  left: 2%;
+}
 </style>
