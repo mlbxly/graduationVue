@@ -78,7 +78,7 @@
         </template>
       </el-table-column>
     </el-table>
-      <div style="display: flex;justify-content: center;margin-top: 400px">
+      <div style="display: flex;justify-content: center;margin-top: 450px">
         <el-pagination
           background
           @size-change="sizeChange"
@@ -250,9 +250,15 @@
       //条件查询
       onSubmit() {
         console.log(this.formInline);
-        this.$axios.post('/property/propertyList',this.formInline).then(res => {
-            if(res.data.code === 0){this.tableData = res.data.data}
-            else{alert(res.data.msg)}
+        this.currentPage = 1
+        this.$axios.post("/property/propertyList/?page="+this.currentPage+"&size="+this.pageSize,this.formInline).then(res => {
+            if(res.data.code === 0) {
+              this.tableData = res.data.data.data
+              this.total = res.data.data.total
+            }
+            else{
+              alert(res.data.msg)
+            }
           }).catch(function (error) {
           console.log(error)
         })
@@ -350,7 +356,7 @@
         this.initUser();
       },
       initUser() {
-        this.$axios.post("/property/propertyList/?page="+this.currentPage+"&size="+this.pageSize).then(resp=>{
+        this.$axios.post("/property/propertyList/?page="+this.currentPage+"&size="+this.pageSize,this.formInline).then(resp=>{
             console.log(resp.data.data)
           this.tableData = resp.data.data.data
           this.total = resp.data.data.total

@@ -9,6 +9,10 @@ import 'element-ui/lib/theme-chalk/index.css'
 import store from './store'
 //引入axios
 import axios from 'axios'
+//echarts
+import Echarts from 'vue-echarts'
+import 'echarts/lib/chart/line'
+import 'echarts/lib/chart/bar'
 Vue.prototype.$axios = axios
 Vue.config.productionTip = false
 //创建axios实例
@@ -19,6 +23,7 @@ axios.defaults.baseURL = "http://127.0.0.1:8090/";
 Vue.config.productionTip = false
 
 Vue.use(ElementUI)
+Vue.component('chart',Echarts)
 
 router.beforeEach((to,from,next) => {
   if(to.meta.requireAuth){

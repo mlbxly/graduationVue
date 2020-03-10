@@ -3,11 +3,11 @@
     <el-submenu index="1">
       <template slot="title">
         <i class="el-icon-s-custom"></i>
-        <span slot="title">用户管理</span>
+        <span slot="title">人员管理</span>
       </template>
-      <el-menu-item-group>
-        <el-menu-item index="/member">人事管理</el-menu-item>
-        <el-menu-item index="1-2">选项2</el-menu-item>
+      <el-menu-item-group title = "人事管理">
+        <el-menu-item index="/member">在职人员管理</el-menu-item>
+        <el-menu-item index="/quitList">离职人员列表</el-menu-item>
       </el-menu-item-group>
       <el-menu-item-group title="分组2">
         <el-menu-item index="1-3">选项3</el-menu-item>
