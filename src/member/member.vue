@@ -78,7 +78,7 @@
         </template>
       </el-table-column>
     </el-table>
-      <div style="display: flex;justify-content: center;margin-top: 450px">
+      <div style="display: flex;justify-content: center;margin-top: 689px">
         <el-pagination
           background
           @size-change="sizeChange"

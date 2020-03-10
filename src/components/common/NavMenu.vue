@@ -14,8 +14,9 @@
 .top{
   width: 100%;
   height: 60px;
-  background: darkslateblue;
+  background-image: linear-gradient(right,#8697A7,#A9B1B4);
   position: fixed;
   top:0%;
+  left: 0%;
 }
 </style>

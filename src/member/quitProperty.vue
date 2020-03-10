@@ -1,6 +1,7 @@
 <template>
-  <div>
-     <el-table :data="quitList" border style="width: 48%;position: fixed;left:100px;top:100px;" height="480">
+  <body>
+  <div class="main">
+     <el-table :data="quitList" border style="width: 59.7%;position: fixed;left:100px;top:100px;" height="230">
     <el-table-column prop="username" label="用户名" width="180">
    </el-table-column>
     <el-table-column prop="phone" label="联系方式" width="180">
@@ -16,6 +17,7 @@
       <chart ref="chart1" :options="orgOptions" :auto-resize="true"></chart>
     </div>
   </div>
+  </body>
 </template>
 
 <script>
@@ -38,7 +40,7 @@
             type: 'value'
           },
           series: [{
-            data: [],
+            data: [1,2,3,4,5,6],
             type: 'bar',
             barWidth : 28,
             smooth: true
@@ -61,9 +63,12 @@
 </script>
 
 <style>
+  body{
+    /*background-image: linear-gradient(right,#8697A7,#A9B1B4);*/
+  }
 .hello{
   position: fixed;
   bottom: 0%;
-  left: 2%;
+  left: 3%;
 }
 </style>
