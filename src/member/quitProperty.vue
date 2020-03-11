@@ -16,6 +16,9 @@
     <div class="hello">
       <chart ref="chart1" :options="orgOptions" :auto-resize="true"></chart>
     </div>
+    <div class="circle">
+      <chart ref="chart2" :options="circleOptions" :auto-resize="true"></chart>
+    </div>
   </div>
   </body>
 </template>
@@ -26,7 +29,8 @@
       data() {
         return {
           quitList: [],
-          orgOptions:{}
+          orgOptions:{},
+          circleOptions:{}
         }
       },
       mounted() {
@@ -40,11 +44,62 @@
             type: 'value'
           },
           series: [{
-            data: [1,2,3,4,5,6],
+            data: [],
             type: 'bar',
             barWidth : 28,
-            smooth: true
+            smooth: true,
+            itemStyle: {
+              normal: {
+                label: {
+                  show: true, //开启显示
+                  position: 'top', //在上方显示
+                  textStyle: { //数值样式
+                    color: 'black',
+                    fontSize: 16
+                  }
+                }
+              }
+            }
           }]
+        }
+        this.circleOptions = {
+          tooltip : {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+          },
+          legend: {
+            orient: 'vertical',
+            bottom: 'bottom',
+            data: ['物业管理员','普通员工']
+          },
+          series : [
+            {
+              name: '访问来源',
+              type: 'pie',
+              radius : '55%',
+              center: ['50%', '60%'],
+              data:[
+                {value:105, name:'物业管理员'},
+                {value:310, name:'普通员工'}
+              ],
+              label : {
+                normal : {
+                  formatter: '{b}:{c}: ({d}%)',
+                  textStyle : {
+                    fontWeight : 'normal',
+                    fontSize : 15
+                  }
+                }
+              },
+              itemStyle: {
+                emphasis: {
+                  shadowBlur: 10,
+                  shadowOffsetX: 0,
+                  shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+              }
+            }
+          ]
         }
       },
       created() {
