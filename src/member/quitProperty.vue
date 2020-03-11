@@ -53,8 +53,13 @@
           }).catch(function(error) {
             alert(error)
           })
-        this.$axios.post('/property/test').then(res => {
+        this.$axios.post('/property/countQuitMonth').then(res => {
           this.orgOptions.xAxis.data = res.data.data
+        }).catch(function(error) {
+          alert(error)
+        })
+        this.$axios.post('/property/countQuitNum').then(res => {
+          this.orgOptions.series[0].data = res.data.data
         }).catch(function(error) {
           alert(error)
         })
