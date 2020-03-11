@@ -1,19 +1,22 @@
 <template>
   <body>
   <div class="main">
-     <el-table :data="quitList" border style="width: 59.7%;position: fixed;left:100px;top:100px;" height="230">
-    <el-table-column prop="username" label="用户名" width="180">
+    <el-input v-model="selectPhone" placeholder="请输入手机号码" size="mini"class="selectPhone"></el-input>
+    <el-button type="primary" icon="el-icon-search" size="mini" class="selectButton" @click="findByPhone">搜索</el-button>
+     <el-table :data="quitList" style="width: 53.2%;position: fixed;left:100px;top:100px;" height="560">
+    <el-table-column prop="username" label="用户名" width="130" align="center">
    </el-table-column>
-    <el-table-column prop="phone" label="联系方式" width="180">
+    <el-table-column prop="phone" label="联系方式" width="180" align="center">
     </el-table-column>
-    <el-table-column prop="userType" label="用户身份" width="180">
+    <el-table-column prop="userType" label="用户身份" width="130" align="center">
     </el-table-column>
-    <el-table-column prop="createTime" label="入职时间" width="180">
+    <el-table-column prop="createTime" label="入职时间" width="180" align="center">
     </el-table-column>
-    <el-table-column prop="removeTime" label="离职时间" width="180">
+    <el-table-column prop="removeTime" label="离职时间" width="180" align="center">
     </el-table-column>
   </el-table>
     <div class="hello">
+      <h3 class="helloH3">近半年员工离职情况</h3>
       <chart ref="chart1" :options="orgOptions" :auto-resize="true"></chart>
     </div>
     <div class="circle">
@@ -30,7 +33,8 @@
         return {
           quitList: [],
           orgOptions:{},
-          circleOptions:{}
+          circleOptions:{},
+          selectPhone:''
         }
       },
       mounted() {
@@ -118,17 +122,40 @@
         }).catch(function(error) {
           alert(error)
         })
+      },
+      methods: {
+        findByPhone() {
+          console.log(this.selectPhone)
+        }
       }
     }
 </script>
 
 <style>
-  body{
-    /*background-image: linear-gradient(right,#8697A7,#A9B1B4);*/
-  }
 .hello{
   position: fixed;
   bottom: 0%;
-  left: 3%;
+  right: 1%;
 }
+  .circle {
+    position: fixed;
+    top:0%;
+    right: 1%;
+  }
+  .helloH3{
+    position: fixed;
+    top:46%;
+    right: 6%;
+  }
+  .selectPhone {
+    position: absolute;
+    top: 9.5%;
+    left: 6.5%;
+    width: 10%;
+  }
+  .selectButton{
+    position: absolute;
+    top:9.5%;
+    left:17%;
+  }
 </style>
