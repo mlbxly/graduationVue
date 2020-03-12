@@ -5,6 +5,7 @@ import Login from '@/components/Login'
 import Home from '@/components/Home'
 import Member from '@/member/Member'
 import QuitProperty from '@/member/QuitProperty'
+import HouseHold from  '@/member/HouseHold'
 
 Vue.use(Router)
 
@@ -33,6 +34,14 @@ export default new Router({
           path:'/quitList',
           name:'QuitProperty',
           component:QuitProperty,
+          meta:{
+            requireAuth: true
+          }
+        },
+        {
+          path:'/houseHold',
+          name:'HouseHold',
+          component:HouseHold,
           meta:{
             requireAuth: true
           }

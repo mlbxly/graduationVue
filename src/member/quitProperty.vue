@@ -20,6 +20,7 @@
       <chart ref="chart1" :options="orgOptions" :auto-resize="true"></chart>
     </div>
     <div class="circle">
+      <h3 class="circleH3">上月物业管理员和普通员工离职比例</h3>
       <chart ref="chart2" :options="circleOptions" :auto-resize="true"></chart>
     </div>
   </div>
@@ -74,21 +75,18 @@
           legend: {
             orient: 'vertical',
             bottom: 'bottom',
-            data: ['物业管理员','普通员工']
+            data: ['物业管理员','普通工人']
           },
           series : [
             {
-              name: '访问来源',
+              name: '离职人员',
               type: 'pie',
               radius : '55%',
               center: ['50%', '60%'],
-              data:[
-                {value:105, name:'物业管理员'},
-                {value:310, name:'普通员工'}
-              ],
+              data:[],
               label : {
                 normal : {
-                  formatter: '{b}:{c}: ({d}%)',
+                  formatter: '{b}:{c}({d}%)',
                   textStyle : {
                     fontWeight : 'normal',
                     fontSize : 15
@@ -122,10 +120,17 @@
         }).catch(function(error) {
           alert(error)
         })
+        this.$axios.post('/property/countQuitCircle').then(res =>{
+          this.circleOptions.series[0].data = res.data.data
+        })
       },
       methods: {
         findByPhone() {
-          console.log(this.selectPhone)
+          this.$axios.post('/property/quitList',this.selectPhone).then(res =>{
+            this.quitList = res.data.data
+          }).catch(function(error) {
+            alert(error)
+          })
         }
       }
     }
