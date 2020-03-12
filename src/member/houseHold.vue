@@ -33,18 +33,18 @@
       </el-form-item>
     </el-form>
     <div>
-       <el-table :data="houseHoldData" stripe style="width: 80%" class="houseHoldTable">
-         <el-table-column prop="username" label="用户名" width="180" align="center">
+       <el-table :data="houseHoldData" stripe style="width: 90%" class="houseHoldTable">
+         <el-table-column prop="username" label="用户名" width="120" align="center">
          </el-table-column>
-         <el-table-column prop="phone" label="联系电话" width="180" align="center">
+         <el-table-column prop="phone" label="联系电话" width="120" align="center">
          </el-table-column>
-         <el-table-column prop="userType" label="住户类型" width="180" align="center">
+         <el-table-column prop="userType" label="住户类型" width="120" align="center">
          </el-table-column>
-         <el-table-column prop="removed" label="状态" width="180" align="center">
+         <el-table-column prop="removed" label="状态" width="120" align="center">
          </el-table-column>
          <el-table-column prop="home" label="入住房间" width="180" align="center">
          </el-table-column>
-         <el-table-column prop="leaseDuration" label="租赁时长/年" width="180" align="center">
+         <el-table-column prop="leaseDuration" label="租赁时长/年" width="100" align="center">
          </el-table-column>
          <el-table-column prop="createTime" label="入住时间" width="180" align="center">
          </el-table-column>
@@ -52,39 +52,42 @@
            <template slot-scope="scope">
              <el-button size="mini" @click="handleEdit(scope.$index)">编辑</el-button>
              <el-button size="mini" type="danger" @click="handleDelete(scope.$index)">删除</el-button>
-             <el-button size="mini" type="warning" @click="changePassword(scope.$index)">修改密码</el-button>
+             <el-button size="mini" type="warning" @click="changePassword(scope.$index)">违规处理</el-button>
            </template>
          </el-table-column>
        </el-table>
     </div>
-    <el-dialog title="住户添加" :visible.sync="dialogFormVisible">
-      <el-form ref="memberForm" :model="memberForm" label-width="80px" size="mini">
+    <el-dialog title="住户添加" :visible.sync="dialogFormVisible" class="addMemberForm">
+      <el-form ref="memberForm" :model="memberForm" label-width="80px">
         <el-form-item label="住户姓名">
-          <el-input v-model="memberForm.username"></el-input>
+          <el-input v-model="memberForm.username" ></el-input>
         </el-form-item>
         <el-form-item label="联系方式">
-          <el-input v-model="memberForm.phone"></el-input>
+          <el-input v-model="memberForm.phone" ></el-input>
         </el-form-item>
         <el-form-item label="用户类型">
-          <el-select v-model="memberForm.userType" placeholder="请选择用户类型">
+          <el-select v-model="memberForm.userType" placeholder="请选择用户类型" @change ="addLeaseDuration(memberForm.userType)" >
             <el-option label="业主" value="1"></el-option>
             <el-option label="租户" value="2"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="入住房间">
-          <el-select v-model="memberForm.unit"  size="mini" placeholder="请选择单元号" prop="unit" @change="selectUnit(memberForm.unit)">
+          <el-select v-model="memberForm.unit" placeholder="单元号" prop="unit" @change="selectUnit(memberForm.unit)" style="width: 100px;">
             <el-option v-for="item in unitList" :key="item.id" :label="item":value="item"></el-option>
           </el-select>
-          <el-select v-model="memberForm.floor" size="mini" placeholder="请选择楼层号" prop="floor" @change="selectFloor(memberForm.floor)">
+          <el-select v-model="memberForm.floor" placeholder="楼层号" prop="floor" @change="selectFloor(memberForm.floor)" style="width: 100px;">
             <el-option v-for="item in floorList" :key="item.id" :label="item":value="item"></el-option>
           </el-select>
-          <el-select v-model="memberForm.room" size="mini" placeholder="请选择房间号" prop="room">
+          <el-select v-model="memberForm.room" placeholder="房间号" prop="room" style="width: 100px;">
             <el-option v-for="item in roomList" :key="item.id" :label="item":value="item"></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="租赁时长">
+          <el-input v-model="memberForm.leaseDuration" v-bind:disabled="lease"></el-input>
+        </el-form-item>
         <el-form-item size="large">
-          <el-button type="primary" @click="onSubmit">立即创建</el-button>
-          <el-button>取消</el-button>
+          <el-button type="primary" @click="onAddMember">添加</el-button>
+          <el-button @click="cancelMember">取消</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -116,8 +119,7 @@
             floor:'',
             room:'',
             userType: '',
-            gender: '',
-            address: ''
+            leaseDuration:''
           },
           unitList: [],
           floorList:[],
@@ -125,7 +127,8 @@
           unitFloor:{
             unit:'',
             floor:''
-          }
+          },
+          lease: false
         }
       },
       created() {
@@ -154,16 +157,19 @@
         onAdd() {
             this.dialogFormVisible = true
           },
+        //后台获取单元号大全作为单元号下拉框选项
         getUnit: function () {
           this.$axios.post('/member/unitList').then(res => {
             this.unitList = res.data.data
           })
         },
+        //后台获取楼层大全作为楼层下拉框选项
         getFloor:function() {
             this.$axios.post('/member/floorList',this.memberForm.unit).then(res => {
               this.floorList = res.data.data
             })
         },
+        //后台获取房间号大全作为房间号下拉框选项
         getRoom:function () {
           this.unitFloor.unit = this.memberForm.unit
           this.unitFloor.floor = this.memberForm.floor
@@ -171,15 +177,49 @@
             this.roomList = res.data.data
           })
         },
+        //重选单元号刷新下拉楼层和房间下拉选项
         selectUnit(val){
             this.memberForm.floor = '';
             this.memberForm.room = '';
             this.getFloor();
             this.getRoom();
         },
+        //重选楼层刷新房间下拉框选项
         selectFloor(val){
           this.memberForm.room = '';
           this.getRoom();
+        },
+        // 添加用户窗口根据用户类型判断租赁时长是否可填
+        addLeaseDuration(val){
+          if(val == 2) {
+            this.lease = false
+          }else{
+            this.lease = true
+            this.memberForm.leaseDuration = ''
+          }
+        },
+        /**
+         * 取消添加用户
+         */
+        cancelMember() {
+          this.dialogFormVisible = false;
+          this.memberForm.username = '';
+          this.memberForm.phone = '';
+          this.memberForm.userType = '';
+          this.memberForm.unit = '';
+          this.memberForm.floor = '';
+          this.memberForm.room = '';
+          this.memberForm.leaseDuration = '';
+        },
+        //确认添加住户
+        onAddMember(){
+          this.$axios.post('/member/addMember',this.memberForm).then(res => {
+            if(res.data.code == 0){
+              window.location.reload();
+            }else{
+              this.$confirm(res.data.msg,'错误提示',{type:'error'})
+            }
+          })
         }
       }
     }
@@ -188,12 +228,17 @@
 <style>
 .houseHoldTable {
   position: fixed;
-  top:11%;
-  left:5%;
+  top:15%;
+  left:7%;
 }
   .member-search{
     position: fixed;
-    top:8%;
-    left:5%;
+    top:10%;
+    left:7%;
+  }
+  .addMemberForm{
+    width:60%;
+    position: fixed;
+    left:20%;
   }
 </style>

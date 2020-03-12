@@ -20,7 +20,7 @@
       <chart ref="chart1" :options="orgOptions" :auto-resize="true"></chart>
     </div>
     <div class="circle">
-      <h3 class="circleH3">上月物业管理员和普通员工离职比例</h3>
+      <h3 class="circleH3">当月物业管理员和普通员工离职比例</h3>
       <chart ref="chart2" :options="circleOptions" :auto-resize="true"></chart>
     </div>
   </div>
@@ -144,13 +144,18 @@
 }
   .circle {
     position: fixed;
-    top:0%;
-    right: 1%;
+    top:-2%;
+    right: 3.5%;
   }
   .helloH3{
     position: fixed;
-    top:46%;
+    top:45.5%;
     right: 6%;
+  }
+  .circleH3{
+    position: fixed;
+    top:10%;
+    right: 1%;
   }
   .selectPhone {
     position: absolute;
