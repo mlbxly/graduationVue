@@ -51,8 +51,8 @@
          <el-table-column label="操作" align="center">
            <template slot-scope="scope">
              <el-button size="mini" @click="handleEdit(scope.$index)">编辑</el-button>
-             <el-button size="mini" type="danger" @click="handleDelete(scope.$index)">删除</el-button>
-             <el-button size="mini" type="warning" @click="changePassword(scope.$index)">违规处理</el-button>
+             <el-button size="mini" type="danger" @click="removeMember(scope.$index)">解除合同</el-button>
+             <el-button size="mini" type="warning" @click="violationHandling(scope.$index)">违规处理</el-button>
            </template>
          </el-table-column>
        </el-table>
@@ -91,14 +91,35 @@
         </el-form-item>
       </el-form>
     </el-dialog>
+    <el-dialog title="违规处理" :visible.sync="violationFormVisible" class="violation">
+      <el-form :inline="true" :model="violationForm">
+        <el-form-item label="违规用户">
+          <el-input v-model="violationForm.username" :placeholder="violationUsername" disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="处罚选择">
+          <el-select v-model="violationForm.punish" placeholder="处罚选择">
+            <el-option label="停水" value="3"></el-option>
+            <el-option label="停电" value="4"></el-option>
+            <el-option label="停水+停电" value="5"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onViolation">确定</el-button>
+          <el-button>取消</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </section>
 </template>
 
 <script>
     import ElOption from "../../node_modules/element-ui/packages/select/src/option.vue";
+    import ElButton from "../../node_modules/element-ui/packages/button/src/button.vue";
 
     export default {
-      components: {ElOption},
+      components: {
+        ElButton,
+        ElOption},
       name: 'HouseHold',
       data() {
         return {
@@ -112,6 +133,7 @@
             endTime: ''
           },
           dialogFormVisible:false,
+          violationFormVisible:false,
           memberForm: {
             username: '',
             phone: '',
@@ -128,7 +150,14 @@
             unit:'',
             floor:''
           },
-          lease: false
+          lease: false,
+          violationForm:{
+            userId:'',
+            username:'',
+            punish:''
+          },
+          propertyName:'',
+          violationUsername:''
         }
       },
       created() {
@@ -151,9 +180,7 @@
         this.getRoom();
       },
       methods :{
-        /**
-         * 显示添加页面
-         */
+        //显示添加页面
         onAdd() {
             this.dialogFormVisible = true
           },
@@ -198,9 +225,7 @@
             this.memberForm.leaseDuration = ''
           }
         },
-        /**
-         * 取消添加用户
-         */
+        //取消添加用户
         cancelMember() {
           this.dialogFormVisible = false;
           this.memberForm.username = '';
@@ -220,6 +245,36 @@
               this.$confirm(res.data.msg,'错误提示',{type:'error'})
             }
           })
+        },
+        //住户解除合同，离去
+        removeMember(index){
+          this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(()=>{
+            console.log(this.houseHoldData[index])
+            this.$axios({
+              url:'http://localhost:8090/member/delete',
+              method:'post',
+              data:this.houseHoldData[index]
+            }).then(res => {
+              if(res.data.code === 0){window.location.reload()}
+              else{this.$confirm(res.data.msg,'错误提示',{type:'error'})}
+            }).catch(failResponse => {})
+            }).catch(()=>{
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            });
+          });
+        },
+        //弹出违规处理窗口
+        violationHandling(index){
+          this.violationFormVisible= true
+          this.violationForm.userId = this.houseHoldData[index].userId
+          this.violationForm.uasername = this.houseHoldData[index].username
+          this.violationUsername = this.houseHoldData[index].username
         }
       }
     }
