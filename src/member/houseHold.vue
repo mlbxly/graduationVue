@@ -8,18 +8,21 @@
         <el-input v-model="memberSearch.phone" placeholder="联系电话" style="width: 120px;"></el-input>
       </el-form-item>
       <el-form-item label="身份类型">
-        <el-select v-model="memberSearch.userType" placeholder="身份类型" style="width: 110px;">
-          <el-option label="物业管理员" value="1"></el-option>
-          <el-option label="普通员工" value="2"></el-option>
+        <el-select v-model="memberSearch.userType" placeholder="身份类型" style="width: 100px;">
+          <el-option label="业主" value="1"></el-option>
+          <el-option label="租户" value="2"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="性别">
-        <el-select v-model="memberSearch.gender" placeholder="性别" style="width: 100px;">
-          <el-option label="男" value="1"></el-option>
-          <el-option label="女" value="2"></el-option>
+      <el-form-item label="状态">
+        <el-select v-model="memberSearch.removed" placeholder="状态" style="width: 110px;">
+          <el-option label="正常" value="1"></el-option>
+          <el-option label="离开" value="2"></el-option>
+          <el-option label="停水" value="3"></el-option>
+          <el-option label="停电" value="4"></el-option>
+          <el-option label="停水+停电" value="5"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="入职时间">
+      <el-form-item label="入住时间">
         <el-date-picker v-model="memberSearch.startTime" type="datetime" placeholder="选择日期时间"
                         style="width: 175px;"></el-date-picker>
         -
@@ -27,7 +30,7 @@
                         style="width: 175px;"></el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">查询</el-button>
+        <el-button type="primary" @click="onSearch">查询</el-button>
         <el-button type="primary" @click="onReset">重置</el-button>
         <el-button type="primary" @click="onAdd">添加</el-button>
       </el-form-item>
@@ -50,9 +53,9 @@
          </el-table-column>
          <el-table-column label="操作" align="center">
            <template slot-scope="scope">
-             <el-button size="mini" @click="handleEdit(scope.$index)">编辑</el-button>
              <el-button size="mini" type="danger" @click="removeMember(scope.$index)">解除合同</el-button>
              <el-button size="mini" type="warning" @click="violationHandling(scope.$index)">违规处理</el-button>
+             <el-button size="mini" type="primary" @click="cancelViolation(scope.$index)">撤销处罚</el-button>
            </template>
          </el-table-column>
        </el-table>
@@ -128,7 +131,7 @@
             username: '',
             phone: '',
             userType: '',
-            gender: '',
+            removed: '',
             startTime: '',
             endTime: ''
           },
@@ -288,6 +291,40 @@
               window.location.reload();
             }else{
               this.$confirm(res.data.msg,'错误提示',{type:'error'})
+            }
+          })
+        },
+        //撤销用户的违规处理处罚
+        cancelViolation(index){
+          this.$confirm('确定取消对该用户的处罚', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消'
+          }).then(()=>{
+            this.$axios.post('/member/cancelViolation',this.houseHoldData[index].userId).then(res =>{
+              if(res.data.code == 0){window.location.reload()}
+              else{this.$confirm(res.data.msg,'错误提示',{type:'error'})}
+            })
+          }).catch(()=>{
+            this.$message({
+              type: 'info',
+              message: '已取消'
+            });
+          });
+        },
+        //搜索条件重置
+        onReset(){
+          this.memberSearch.username = ''
+          this.memberSearch.phone = ''
+          this.memberSearch.userType = ''
+          this.memberSearch.removed = ''
+          this.memberSearch.startTime = ''
+          this.memberSearch.endTime = ''
+        },
+        //条件搜索
+        onSearch(){
+          this.$axios.post('/member/list',this.memberSearch).then(res =>{
+            if(res.data.code == 0){
+              this.houseHoldData = res.data.data
             }
           })
         }
