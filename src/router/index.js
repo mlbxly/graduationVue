@@ -6,6 +6,8 @@ import Home from '@/components/Home'
 import Member from '@/member/Member'
 import QuitProperty from '@/member/QuitProperty'
 import HouseHold from  '@/member/HouseHold'
+import House from '@/member/House'
+import HomePage from '@/member/HomePage'
 
 Vue.use(Router)
 
@@ -20,7 +22,7 @@ export default new Router({
       name: 'Home',
       path: '/home',
       component: Home,
-      redirect: '/member',
+      redirect: '/homePage',
       children: [
         {
           path: '/member',
@@ -44,6 +46,22 @@ export default new Router({
           component:HouseHold,
           meta:{
             requireAuth: true
+          }
+        },
+        {
+          path:'/house',
+          name: 'House',
+          component: House,
+          meta:{
+            requireAuth: true
+          }
+        },
+        {
+          path:'/homePage',
+          name:'HomePage',
+          component: HomePage,
+          meta:{
+            requireAuth:true
           }
         }
       ]
