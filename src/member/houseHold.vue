@@ -98,14 +98,14 @@
         </el-form-item>
         <el-form-item label="处罚选择">
           <el-select v-model="violationForm.punish" placeholder="处罚选择">
-            <el-option label="停水" value="3"></el-option>
-            <el-option label="停电" value="4"></el-option>
-            <el-option label="停水+停电" value="5"></el-option>
+            <el-option label="停水" value="1"></el-option>
+            <el-option label="停电" value="2"></el-option>
+            <el-option label="停水+停电" value="3"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onViolation">确定</el-button>
-          <el-button>取消</el-button>
+          <el-button @click="cancelViolation">取消</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -275,6 +275,21 @@
           this.violationForm.userId = this.houseHoldData[index].userId
           this.violationForm.uasername = this.houseHoldData[index].username
           this.violationUsername = this.houseHoldData[index].username
+        },
+        //取消违规处理
+        cancelViolation(){
+          this.violationFormVisible= false
+          this.violationForm.punish = ''
+        },
+        //确认处理用户
+        onViolation(){
+          this.$axios.post('/member/violation',this.violationForm).then(res => {
+            if(res.data.code == 0){
+              window.location.reload();
+            }else{
+              this.$confirm(res.data.msg,'错误提示',{type:'error'})
+            }
+          })
         }
       }
     }
