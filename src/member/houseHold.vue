@@ -108,7 +108,7 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onViolation">确定</el-button>
-          <el-button @click="cancelViolation">取消</el-button>
+          <el-button @click="callOffViolation">取消</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -280,7 +280,7 @@
           this.violationUsername = this.houseHoldData[index].username
         },
         //取消违规处理
-        cancelViolation(){
+        callOffViolation(){
           this.violationFormVisible= false
           this.violationForm.punish = ''
         },

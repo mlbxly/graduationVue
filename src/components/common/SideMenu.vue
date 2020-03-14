@@ -47,6 +47,6 @@
   .sideNav {
     position: fixed;
     left: 0%;
-    top:8.2%;
+    top:8.5%;
   }
 </style>
