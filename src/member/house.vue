@@ -3,16 +3,20 @@
     <div class="container">
       <div class="handle-box">
         <el-button type="primary" icon="el-icon-delete" class="handle-del mr10" @click="delAllSelection">批量删除</el-button>
-        <el-select v-model="query.address" placeholder="地址" class="handle-select mr10">
-          <el-option key="1" label="广东省" value="广东省"></el-option>
-          <el-option key="2" label="湖南省" value="湖南省"></el-option>
+        <el-select v-model="query.unit" placeholder="单元号" prop="unit" @change="selectUnit(query.unit)" class="handle-select mr10">
+          <el-option v-for="item in unitList" :key="item.id" :label="item":value="item"></el-option>
         </el-select>
-        <el-select v-model="query.unit" placeholder="单元号" class="handle-select mr10">
-          <el-option key="1" label="广东省" value="广东省"></el-option>
-          <el-option key="2" label="湖南省" value="湖南省"></el-option>
+        <el-select v-model="query.floor" placeholder="楼层号" prop="floor" @change="selectFloor(query.floor)" class="handle-select mr10">
+          <el-option v-for="item in floorList" :key="item.id" :label="item":value="item"></el-option>
         </el-select>
-        <el-input v-model="query.name" placeholder="用户名" class="handle-input mr10"></el-input>
+        <el-select v-model="query.room" placeholder="房间号" prop="room" class="handle-select mr10">
+          <el-option v-for="item in roomList" :key="item.id" :label="item":value="item"></el-option>
+        </el-select>
+          <el-date-picker v-model="query.startTime" type="datetime" placeholder="登记时间" style="width: 195px;"></el-date-picker>
+          -
+          <el-date-picker v-model="query.endTime" type="datetime" placeholder="登记时间" style="width: 195px;margin-right: 15px;"></el-date-picker>
         <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
+        <el-button type="primary"icon="el-icon-refresh-right" @click="cancelSearch">重置</el-button>
         <el-button type="primary" icon="el-icon-plus" @click="handleAdd">添加</el-button>
       </div>
         <el-table :data="tableData" border class="table" ref="multipleTable" header-cell-class-name="table-header"
@@ -28,16 +32,14 @@
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="操作" width="180" align="center">
+          <el-table-column label="操作" width="220" align="center">
             <template slot-scope="scope">
-              <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-              <el-button type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">
-                删除
-              </el-button>
+              <el-button type="text" icon="el-icon-view" @click="seeMember(scope.$index)">查看住户</el-button>
+              <el-button type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
-      <div style="display: flex;justify-content: center;margin-top: 575px;" >
+      <div style="display: flex;justify-content: center;margin-top: 642px;" >
         <el-pagination
           background
           @size-change="sizeChange"
@@ -68,6 +70,22 @@
                 <el-button type="primary" @click="saveHome">确 定</el-button>
             </span>
     </el-dialog>
+    <el-dialog title="住户信息" :visible.sync="memberVisible" width="30%">
+      <el-form ref="memberVo" :model="memberVo" label-width="70px">
+        <el-form-item label="住户姓名">
+          <el-input v-model="memberVo.username" disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="联系电话">
+          <el-input v-model="memberVo.phone" disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="状态">
+          <el-input v-model="memberVo.removed" disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="入住时间">
+          <el-input v-model="memberVo.createTime" disabled="true"></el-input>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
@@ -77,21 +95,37 @@
     data() {
       return {
         query: {
-          address: '',
-          name: '',
-          unit:''
+          unit:'',
+          floor:'',
+          room:'',
+          startTime:'',
+          endTime:''
         },
         tableData: [],
         multipleSelection: [],
         delList: [],
         editVisible: false,
-        pageSize:10,
+        memberVisible:false,
+        pageSize:7,
         currentPage:1,
         total:0,
+        unitList:[],
+        floorList:[],
+        roomList:[],
+        unitFloor:{
+          unit:'',
+          floor:''
+        },
         homeForm: {
           unit:'',
           floor:'',
           room:''
+        },
+        memberVo:{
+          username: '',
+          phone:'',
+          removed:'',
+          createTime:''
         },
         idx: -1,
         id: -1
@@ -99,8 +133,46 @@
     },
     mounted() {
       this.initHouse();
+      //展示单元号
+      this.getUnit();
+      //展示楼层
+      this.getFloor();
+      //展示房间号
+      this.getRoom();
     },
     methods: {
+      //后台获取单元号大全作为单元号下拉框选项
+      getUnit: function () {
+        this.$axios.post('/member/unitList').then(res => {
+          this.unitList = res.data.data
+        })
+      },
+      //后台获取楼层大全作为楼层下拉框选项
+      getFloor:function() {
+        this.$axios.post('/member/floorList',this.query.unit).then(res => {
+          this.floorList = res.data.data
+        })
+      },
+      //后台获取房间号大全作为房间号下拉框选项
+      getRoom:function () {
+        this.unitFloor.unit = this.query.unit
+        this.unitFloor.floor = this.query.floor
+        this.$axios.post('/member/roomList',this.unitFloor).then(res => {
+          this.roomList = res.data.data
+        })
+      },
+      //重选单元号刷新下拉楼层和房间下拉选项
+      selectUnit(val){
+        this.query.floor = '';
+        this.query.room = '';
+        this.getFloor();
+        this.getRoom();
+      },
+      //重选楼层刷新房间下拉框选项
+      selectFloor(val){
+        this.query.room = '';
+        this.getRoom();
+      },
       handleCurrentChange(val) {
         this.currentRow = val;
       },
@@ -111,20 +183,32 @@
           this.total = res.data.data.total
         })
       },
+      currentChange(page) {
+        this.currentPage=page;
+        this.initHouse();
+      },
       // 触发搜索按钮
       handleSearch() {
-        this.$set(this.query, 'pageIndex', 1);
-        this.getData();
+        this.currentPage = 1;
+        this.$axios.post("/home/list/?page="+this.currentPage+"&size="+this.pageSize,this.query).then(res => {
+          this.tableData = res.data.data.data;
+          this.total = res.data.data.total;
+        })
       },
       // 删除操作
-      handleDelete(index, row) {
+      handleDelete(index) {
         // 二次确认删除
         this.$confirm('确定要删除吗？', '提示', {
           type: 'warning'
         })
           .then(() => {
-            this.$message.success('删除成功');
-            this.tableData.splice(index, 1);
+            this.$axios.post('/home/remove',this.tableData[index].houseId).then(res => {
+              if(res.data.code == 0){
+                window.location.reload();
+              }else{
+                this.$message.error(res.data.msg);
+              }
+            })
           })
           .catch(() => {});
       },
@@ -163,10 +247,30 @@
           }
         })
       },
+      seeMember(index){
+        this.$axios.post('/home/see',this.tableData[index].houseId).then(res =>{
+          if(res.data.code == 0){
+            this.memberVisible = true;
+            this.memberVo = res.data.data
+          }else{
+            this.$message.error(res.data.msg);
+          }
+        })
+      },
       // 分页导航
       handlePageChange(val) {
         this.$set(this.query, 'pageIndex', val);
         this.getData();
+      },
+      cancelSearch(){
+        this.query.unit = '';
+        this.query.floor = '';
+        this.query.room = '';
+        this.query.startTime = '';
+        this.query.endTime = '';
+        this.getUnit();
+        this.getFloor();
+        this.getRoom();
       }
     }
   };
