@@ -54,7 +54,7 @@
             this.owners = res.data.data.owners
             this.tenants = res.data.data.tenants
             this.removes = res.data.data.removes
-            this.Illegals = res.data.data.illegals
+            this.illegals = res.data.data.illegals
             this.memberNum = 1234
             this.houseNum = 256
             this.workNum = 2187;

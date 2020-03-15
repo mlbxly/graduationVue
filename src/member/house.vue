@@ -210,8 +210,7 @@
                 this.$message.error(res.data.msg);
               }
             })
-          })
-          .catch(() => {});
+          }).catch(() => {});
       },
       // 多选操作
       handleSelectionChange(val) {
