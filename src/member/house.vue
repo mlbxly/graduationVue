@@ -2,7 +2,7 @@
   <div>
     <div class="container">
       <div class="handle-box">
-        <el-button type="primary" icon="el-icon-delete" class="handle-del mr10" @click="delAllSelection">批量删除</el-button>
+        <el-button type="warning" icon="el-icon-delete" class="handle-del mr10" @click="delAllSelection">批量删除</el-button>
         <el-select v-model="query.unit" placeholder="单元号" prop="unit" @change="selectUnit(query.unit)" class="handle-select mr10">
           <el-option v-for="item in unitList" :key="item.id" :label="item":value="item"></el-option>
         </el-select>
@@ -128,7 +128,8 @@
           createTime:''
         },
         idx: -1,
-        id: -1
+        id: -1,
+        houseIds:''
       };
     },
     mounted() {
@@ -218,13 +219,27 @@
       },
       delAllSelection() {
         const length = this.multipleSelection.length;
-        let str = '';
-        this.delList = this.delList.concat(this.multipleSelection);
-        for (let i = 0; i < length; i++) {
-          str += this.multipleSelection[i].name + ' ';
+        for(let i =0 ;i<length;i++){
+          this.houseIds += this.multipleSelection[i].houseId+"/"
         }
-        this.$message.error(`删除了${str}`);
-        this.multipleSelection = [];
+        this.$confirm('此操作将批量删除房屋, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(()=> {
+          this.$axios.post('/home/removeIds', this.houseIds).then(res => {
+            if (res.data.code == 0) {
+              window.location.reload();
+            }else{
+              this.$message.error(res.data.msg);
+            }
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
       },
       //弹出添加窗口
       handleAdd(){
