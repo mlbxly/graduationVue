@@ -36,7 +36,7 @@
       </el-form-item>
     </el-form>
     <div>
-       <el-table :data="houseHoldData" stripe style="width: 90%" class="houseHoldTable">
+       <el-table :data="houseHoldData" stripe style="width: 90%" class="houseHoldTable" height="600">
          <el-table-column prop="username" label="用户名" width="120" align="center">
          </el-table-column>
          <el-table-column prop="phone" label="联系电话" width="120" align="center">

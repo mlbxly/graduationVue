@@ -1,9 +1,6 @@
 <template>
   <div class="top">
     <h2 style="color: azure;letter-spacing: 3px;">物业管理系统</h2>
-    <div class="out">
-      <i class="el-icon-switch-button"></i>
-    </div>
   </div>
 </template>
 

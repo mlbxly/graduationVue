@@ -8,6 +8,7 @@ import QuitProperty from '@/member/QuitProperty'
 import HouseHold from  '@/member/HouseHold'
 import House from '@/member/House'
 import HomePage from '@/member/HomePage'
+import Bill from '@/member/Bill'
 
 Vue.use(Router)
 
@@ -60,6 +61,14 @@ export default new Router({
           path:'/homePage',
           name:'HomePage',
           component: HomePage,
+          meta:{
+            requireAuth:true
+          }
+        },
+        {
+          path:'/bill',
+          name:"Bill",
+          component:Bill,
           meta:{
             requireAuth:true
           }

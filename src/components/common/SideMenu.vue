@@ -26,7 +26,7 @@
         <i class="el-icon-office-building"></i>
         <span slot="title">房屋资源管理</span>
       </el-menu-item>
-      <el-menu-item index="3" v-bind:disabled="billDisabled">
+      <el-menu-item index="bill" v-bind:disabled="billDisabled">
         <i class="el-icon-document"></i>
         <span slot="title">住户缴费账单信息管理</span>
       </el-menu-item>
