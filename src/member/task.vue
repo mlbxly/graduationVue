@@ -1,38 +1,30 @@
 <template>
-  <el-table
-    :data="tableData"
-    style="width: 50%"
-    height="250">
-    <el-table-column
-      fixed
-      prop="date"
-      label="日期"
-      width="150">
+  <el-table :data="taskData" style="width: 88%" height="580" class="taskTable">
+    <el-table-column fixed prop="createTime" label="发布时间" width="230" align="center">
     </el-table-column>
-    <el-table-column
-      prop="name"
-      label="姓名"
-      width="120">
+    <el-table-column prop="taskName" label="报修内容" width="120" align="center">
     </el-table-column>
-    <el-table-column
-      prop="province"
-      label="省份"
-      width="120">
+    <el-table-column prop="placeType" label="区域" width="120" align="center">
     </el-table-column>
-    <el-table-column
-      prop="city"
-      label="市区"
-      width="120">
+    <el-table-column prop="place" label="地址" width="150" align="center">
     </el-table-column>
-    <el-table-column
-      prop="address"
-      label="地址"
-      width="300">
+    <el-table-column prop="createName" label="发布人" width="120" align="center">
     </el-table-column>
-    <el-table-column
-      prop="zip"
-      label="邮编"
-      width="120">
+    <el-table-column prop="status" label="服务状态" width="120" align="center">
+    </el-table-column>
+    <el-table-column prop="acceptName" label="维修员" width="120" align="center">
+    </el-table-column>
+    <el-table-column prop="acceptTime" label="接单时间" width="120" align="center">
+    </el-table-column>
+    <el-table-column prop="acceptanceName" label="验收人" width="120" align="center">
+    </el-table-column>
+    <el-table-column prop="completeTime" label="完成时间" width="120" align="center">
+    </el-table-column>
+    <el-table-column fixed="right" label="操作" width="100">
+      <template slot-scope="scope">
+        <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+        <el-button type="text" size="small">编辑</el-button>
+      </template>
     </el-table-column>
   </el-table>
 </template>
@@ -42,57 +34,114 @@
     name:'task',
     data() {
       return {
-        tableData: [{
-          date: '2016-05-03',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-02',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-08',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-06',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-07',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
+        taskData: [{
+          createTime: '2016-05-03 12:00:00',
+          taskName: '窗纱破损',
+          placeType: '私人区域',
+          place: '1单元2层209室',
+          createName: '王小虎',
+          status: '待处理',
+          acceptName:'郭小宝',
+          acceptTime:'2016-05-03 13:00:00',
+          acceptanceName:'小马哥',
+          completeTime:'2016-05-03 15:00:00'
+        },{
+          createTime: '2016-05-03 12:00:00',
+          taskName: '窗纱破损',
+          placeType: '私人区域',
+          place: '1单元2层209室',
+          createName: '王小虎',
+          status: '待处理',
+          acceptName:'郭小宝',
+          acceptTime:'2016-05-03 13:00:00',
+          acceptanceName:'小马哥',
+          completeTime:'2016-05-03 15:00:00'
+        },{
+          createTime: '2016-05-03 12:00:00',
+          taskName: '我登记哈价格发手机号大客户',
+          placeType: '私人区域',
+          place: '1单元2层209室',
+          createName: '王小虎',
+          status: '待处理',
+          acceptName:'郭小宝',
+          acceptTime:'2016-05-03 13:00:00',
+          acceptanceName:'小马哥',
+          completeTime:'2016-05-03 15:00:00'
+        },{
+          createTime: '2016-05-03 12:00:00',
+          taskName: '窗纱破损',
+          placeType: '私人区域',
+          place: '1单元2层209室',
+          createName: '王小虎',
+          status: '待处理',
+          acceptName:'郭小宝',
+          acceptTime:'2016-05-03 13:00:00',
+          acceptanceName:'小马哥',
+          completeTime:'2016-05-03 15:00:00'
+        },{
+          createTime: '2016-05-03 12:00:00',
+          taskName: '窗纱破损',
+          placeType: '私人区域',
+          place: '1单元2层209室',
+          createName: '王小虎',
+          status: '待处理',
+          acceptName:'郭小宝',
+          acceptTime:'2016-05-03 13:00:00',
+          acceptanceName:'小马哥',
+          completeTime:'2016-05-03 15:00:00'
+        },{
+          createTime: '2016-05-03 12:00:00',
+          taskName: '窗纱破损',
+          placeType: '私人区域',
+          place: '1单元2层209室',
+          createName: '王小虎',
+          status: '待处理',
+          acceptName:'郭小宝',
+          acceptTime:'2016-05-03 13:00:00',
+          acceptanceName:'小马哥',
+          completeTime:'2016-05-03 15:00:00'
+        },{
+          createTime: '2016-05-03 12:00:00',
+          taskName: '窗纱破损',
+          placeType: '私人区域',
+          place: '1单元2层209室',
+          createName: '王小虎',
+          status: '待处理',
+          acceptName:'郭小宝',
+          acceptTime:'2016-05-03 13:00:00',
+          acceptanceName:'小马哥',
+          completeTime:'2016-05-03 15:00:00'
+        },{
+          createTime: '2016-05-03 12:00:00',
+          taskName: '窗纱破损',
+          placeType: '私人区域',
+          place: '1单元2层209室',
+          createName: '王小虎',
+          status: '待处理',
+          acceptName:'郭小宝',
+          acceptTime:'2016-05-03 13:00:00',
+          acceptanceName:'小马哥',
+          completeTime:'2016-05-03 15:00:00'
+        },{
+          createTime: '2016-05-03 12:00:00',
+          taskName: '窗纱破损',
+          placeType: '私人区域',
+          place: '1单元2层209室',
+          createName: '王小虎',
+          status: '待处理',
+          acceptName:'郭小宝',
+          acceptTime:'2016-05-03 13:00:00',
+          acceptanceName:'小马哥',
+          completeTime:'2016-05-03 15:00:00'
         }]
       }
     }
   }
 </script>
+<style>
+  .taskTable{
+    position: fixed;
+    top:15%;
+    left: 8%;
+  }
+</style>
