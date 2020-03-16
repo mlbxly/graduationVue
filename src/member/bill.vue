@@ -18,7 +18,7 @@
         <el-table-column prop="payTime" label="缴纳时间" width="180" align="center"></el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
-            <el-button size="mini" type="primary" @click="handleEdit(scope.$index)">支付</el-button>
+            <el-button size="mini" type="primary" @click="handleConfirm(scope.$index)">支付</el-button>
             <el-button size="mini" type="danger" @click="handleDelete(scope.$index)">删除</el-button>
           </template>
         </el-table-column>
@@ -145,6 +145,46 @@
             }else{
               this.$message.error(res.data.msg);
             }
+          })
+        },
+        handleConfirm(index){
+          this.$confirm('确认用户已经支付，账单费用已经到账?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'primary'
+          }).then(()=> {
+           this.$axios.post('/bill/confirm',this.billData[index].billId).then(res => {
+             if(res.data.code == 0){
+               window.location.reload()
+             }else{
+               this.$message(res.data.msg)
+             }
+           })
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '用户支付账单费用尚未到账'
+            })
+          })
+        },
+        handleDelete(index){
+          this.$confirm('此操作将永久删除该账单，是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(()=> {
+            this.$axios.post('/bill/delete',this.billData[index].billId).then(res => {
+              if(res.data.code == 0){
+                window.location.reload()
+              }else{
+                this.$message(res.data.msg)
+              }
+            })
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            })
           })
         }
       }
