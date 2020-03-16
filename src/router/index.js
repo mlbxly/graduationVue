@@ -9,6 +9,7 @@ import HouseHold from  '@/member/HouseHold'
 import House from '@/member/House'
 import HomePage from '@/member/HomePage'
 import Bill from '@/member/Bill'
+import Task from '@/member/task'
 
 Vue.use(Router)
 
@@ -69,6 +70,14 @@ export default new Router({
           path:'/bill',
           name:"Bill",
           component:Bill,
+          meta:{
+            requireAuth:true
+          }
+        },
+        {
+          path:'/task',
+          name:'Task',
+          component:Task,
           meta:{
             requireAuth:true
           }

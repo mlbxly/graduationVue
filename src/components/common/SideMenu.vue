@@ -2,7 +2,7 @@
   <div class="sideNav">
     <div class="topTitle">{{username}},欢迎您使用系统</div>
     <div class="iconTitle">
-      <el-button type="info" icon="el-icon-switch-button" circle style="font-size: 16px;" @click="loginOut"></el-button>
+      <el-button type="info" icon="el-icon-switch-button" circle style="font-size: 16px;background: #8697A7" @click="loginOut"></el-button>
       退出
     </div>
     <el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
@@ -30,7 +30,7 @@
         <i class="el-icon-document"></i>
         <span slot="title">住户缴费账单信息管理</span>
       </el-menu-item>
-      <el-menu-item index="4">
+      <el-menu-item index="task">
         <i class="el-icon-s-grid"></i>
         <span slot="title">报修管理</span>
       </el-menu-item>

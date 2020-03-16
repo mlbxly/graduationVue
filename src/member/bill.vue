@@ -1,6 +1,16 @@
 <template>
   <div class="main">
-    <el-button type="primary" @click="onAdd">添加账单</el-button>
+    <section>
+      <el-form :inline="true" :model="billQuery" class="bill-search">
+        <el-form-item label="联系电话" style="font-size: 25px;">
+          <el-input v-model="billQuery.phone" placeholder="联系电话" style="width: 220px;"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onSearch">查询</el-button>
+          <el-button type="primary" @click="onReset">重置</el-button>
+          <el-button type="primary" @click="onAdd">添加账单</el-button>
+        </el-form-item>
+      </el-form>
     <div class="box">
       <ul>
         <li><el-tag type="info" class="all" @click ="payedAll()" id ="all">全部</el-tag></li>
@@ -8,10 +18,10 @@
       </ul>
     </div>
     <div>
-      <el-table :data="billData" stripe style="width: 80%" class="billTable">
-        <el-table-column prop="username" label="用户姓名" width="180" align="center"></el-table-column>
-        <el-table-column prop="remark" label="名称" width="180" align="center"></el-table-column>
-        <el-table-column prop="money" label="金额" width="180" align="center"></el-table-column>
+      <el-table :data="billData" stripe style="width: 90%" class="billTable" height="500">
+        <el-table-column prop="username" label="用户姓名" width="150" align="center"></el-table-column>
+        <el-table-column prop="remark" label="名称" width="150" align="center"></el-table-column>
+        <el-table-column prop="money" label="金额" width="120" align="center"></el-table-column>
         <el-table-column prop="cycle" label="账单周期" width="180" align="center"></el-table-column>
         <el-table-column prop="deadline" label="应缴日期" width="180" align="center"></el-table-column>
         <el-table-column prop="payed" label="状态" width="180" align="center"></el-table-column>
@@ -23,25 +33,25 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-dialog title="账单添加" :visible.sync="dialogFormVisible" style="width:65%;">
-        <el-form ref="billForm" :model="billForm" label-width="120px">
+      <el-dialog title="账单添加" :visible.sync="dialogFormVisible" style="width:75%;" class="addDialog">
+        <el-form ref="billForm" :model="billForm" label-width="100px" style="width:100%;">
           <el-form-item label="住户">
-            <el-select v-model="billForm.userId" placeholder="住户选择" prop="userId">
+            <el-select v-model="billForm.userId" placeholder="住户选择" prop="userId" style="width: 90%;">
               <el-option v-for="item in memberList" :key="item.id" :label="item.username":value="item.userId"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="账单周期">
-            <el-date-picker v-model="billForm.billStartTime" type="datetime" placeholder="选择日期时间"></el-date-picker>
+            <el-date-picker v-model="billForm.billStartTime" type="datetime" placeholder="选择日期时间" style="width: 192px;"></el-date-picker>
             -
-            <el-date-picker v-model="billForm.billEndTime" type="datetime" placeholder="选择日期时间"></el-date-picker>
+            <el-date-picker v-model="billForm.billEndTime" type="datetime" placeholder="选择日期时间" style="width: 192px;"></el-date-picker>
           </el-form-item>
           <el-form-item label="金额">
-            <el-input v-model="billForm.money"></el-input>
+            <el-input v-model="billForm.money" style="width: 90%;"></el-input>
           </el-form-item>
           <el-form-item label="备注信息">
-            <el-input v-model="billForm.remark"></el-input>
+            <el-input v-model="billForm.remark" style="width: 90%;"></el-input>
           </el-form-item>
-          <el-form-item label="缴纳截止时间">
+          <el-form-item label="应缴日期">
             <el-date-picker v-model="billForm.deadline" type="datetime" placeholder="选择日期时间"></el-date-picker>
           </el-form-item>
           <el-form-item size="large">
@@ -51,6 +61,7 @@
         </el-form>
       </el-dialog>
     </div>
+    </section>
   </div>
 </template>
 
@@ -63,8 +74,6 @@
             payTab:'',
             billQuery:{
               phone:'',
-              payStartTime:'',
-              payEndTime:'',
               payed: ''
             },
             dialogFormVisible:false,
@@ -93,6 +102,7 @@
         this.getUserId();
       },
       methods:{
+        //切换至全部tab
         payedAll() {
           this.billQuery.payed = '';
           document.getElementById('all').style.borderBottom ="none"
@@ -107,6 +117,7 @@
             }
           })
         },
+        //切换至未缴纳tab
         Unpaid() {
           this.billQuery.payed = 1;
           document.getElementById('unpaid').style.borderBottom ="none"
@@ -121,14 +132,17 @@
             }
           })
         },
+        //弹出添加窗口
         onAdd() {
           this.dialogFormVisible = true;
         },
+        //添加账单下拉选择用户
         getUserId:function () {
           this.$axios.post('/bill/inList').then(res => {
             this.memberList = res.data.data
           })
         },
+        //取消添加，推出窗口
         cancelBill() {
           this.billForm.userId = ''
           this.billForm.money = ''
@@ -138,6 +152,7 @@
           this.billForm.billStartTime = ''
           this.dialogFormVisible = false
         },
+        //确认添加
         onAddBill(){
           this.$axios.post('/bill/add',this.billForm).then(res =>{
             if(res.data.code == 0){
@@ -147,6 +162,7 @@
             }
           })
         },
+        //确认支付
         handleConfirm(index){
           this.$confirm('确认用户已经支付，账单费用已经到账?', '提示', {
             confirmButtonText: '确定',
@@ -167,6 +183,7 @@
             })
           })
         },
+        //确认删除
         handleDelete(index){
           this.$confirm('此操作将永久删除该账单，是否继续?', '提示', {
             confirmButtonText: '确定',
@@ -186,6 +203,16 @@
               message: '已取消删除'
             })
           })
+        },
+        //清除搜索条件
+        onReset() {
+          this.billQuery.phone = ''
+        },
+        //搜索
+        onSearch(){
+          this.$axios.post('/bill/list',this.billQuery).then(res =>{
+            this.billData = res.data.data
+          })
         }
       }
     }
@@ -194,16 +221,16 @@
 <style scoped>
 .billTable {
   position: fixed;
-  top: 15.2%;
-  left: 10%;
+  top: 25%;
+  left: 7%;
 }
 .box{
   border-bottom: 1px solid #909399;
-  width: 80%;
+  width: 90%;
   height: 5%;
   position: fixed;
-  top:10%;
-  left: 10%;
+  top:17%;
+  left: 7%;
 }
 .box ul {
   list-style: none;
@@ -211,9 +238,11 @@
 .all{
   position: fixed;
   left:12%;
-  top:12.1%;
-  width: 3%;
-  height: 3%;
+  top:18.1%;
+  width: 5%;
+  height: 4%;
+  font-size: 18px;
+  line-height: 30px;
   border: 1px solid #909399;
   border-bottom: none;
   border-radius:inherit;
@@ -221,14 +250,25 @@
 }
 .Unpaid{
   position: fixed;
-  left:14.9%;
-  top:12.1%;
-  width: 4%;
-  height: 3%;
+  left:17%;
+  top:18.1%;
+  width: 5%;
+  height: 4%;
+  font-size: 18px;
+  line-height: 35px;
   background: #fff;
-  border: 1px solid #909399;
-  border-right: none;
-  border-top: none;
+  border: none;
+  border-bottom:1px solid #909399;
   border-radius:inherit;
   }
+.addDialog{
+    position: fixed;
+    top:5%;
+    left: 10%;
+  }
+.bill-search{
+  position: fixed;
+  top:10%;
+  left: 8%;
+}
 </style>
