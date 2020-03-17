@@ -1,16 +1,15 @@
 <template>
   <div class="main">
     <el-form :inline="true" :model="taskSearch" class="task-search" size="mini">
-      <el-form-item label="用户名">
-        <el-input v-model="taskSearch.username" placeholder="用户名称" style="width: 120px;"></el-input>
+      <el-form-item label="发布时间">
+        <el-date-picker v-model="taskSearch.startTime" type="datetime" placeholder="选择日期时间" style="width: 175px;"></el-date-picker>
+        -
+        <el-date-picker v-model="taskSearch.endTime" type="datetime" placeholder="选择日期时间" style="width: 175px;"></el-date-picker>
       </el-form-item>
-      <el-form-item label="联系电话">
-        <el-input v-model="taskSearch.phone" placeholder="联系电话" style="width: 120px;"></el-input>
-      </el-form-item>
-      <el-form-item label="身份类型">
-        <el-select v-model="taskSearch.userType" placeholder="身份类型" style="width: 110px;">
-          <el-option label="物业管理员" value="1"></el-option>
-          <el-option label="普通员工" value="2"></el-option>
+      <el-form-item label="区域">
+        <el-select v-model="taskSearch.placeType" placeholder="区域位置" style="width: 110px;">
+          <el-option label="公共区域" value="1"></el-option>
+          <el-option label="私人房间" value="2"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="性别">
@@ -18,11 +17,6 @@
           <el-option label="男" value="1"></el-option>
           <el-option label="女" value="2"></el-option>
         </el-select>
-      </el-form-item>
-      <el-form-item label="入职时间">
-        <el-date-picker v-model="taskSearch.startTime" type="datetime" placeholder="选择日期时间" style="width: 175px;"></el-date-picker>
-        -
-        <el-date-picker v-model="taskSearch.endTime" type="datetime" placeholder="选择日期时间" style="width: 175px;"></el-date-picker>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">查询</el-button>

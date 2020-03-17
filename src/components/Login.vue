@@ -53,7 +53,7 @@
            this.$store.commit('USER_TOKEN',JSON.stringify(successResponse.data.data))
            this.$router.replace({path: '/home'})
          }else{
-           confirm("登陆失败，用户名或密码错误")
+           this.$message.error("登陆失败，用户名或密码错误")
          }
        }).catch(failResponse => {
        })
