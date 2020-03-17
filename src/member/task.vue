@@ -1,31 +1,35 @@
 <template>
   <div class="main">
-    <el-form :inline="true" :model="taskSearch" class="task-search" size="mini">
+    <el-form :inline="true" :model="taskSearch" class="task-search">
       <el-form-item label="发布时间">
-        <el-date-picker v-model="taskSearch.startTime" type="datetime" placeholder="选择日期时间" style="width: 175px;"></el-date-picker>
+        <el-date-picker v-model="taskSearch.startTime" type="datetime" placeholder="选择日期时间"></el-date-picker>
         -
-        <el-date-picker v-model="taskSearch.endTime" type="datetime" placeholder="选择日期时间" style="width: 175px;"></el-date-picker>
+        <el-date-picker v-model="taskSearch.endTime" type="datetime" placeholder="选择日期时间"></el-date-picker>
       </el-form-item>
       <el-form-item label="区域">
-        <el-select v-model="taskSearch.placeType" placeholder="区域位置" style="width: 110px;">
+        <el-select v-model="taskSearch.placeType" placeholder="区域位置">
           <el-option label="公共区域" value="1"></el-option>
           <el-option label="私人房间" value="2"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="性别">
-        <el-select v-model="taskSearch.gender" placeholder="性别" style="width: 100px;">
-          <el-option label="男" value="1"></el-option>
-          <el-option label="女" value="2"></el-option>
+      <el-form-item label="状态">
+        <el-select v-model="taskSearch.status" placeholder="status">
+          <el-option label="待处理" value="1"></el-option>
+          <el-option label="处理中" value="2"></el-option>
+          <el-option label="待验收" value="3"></el-option>
+          <el-option label="已完成" value="4"></el-option>
+          <el-option label="已关闭" value="5"></el-option>
+          <el-option label="无人接单自动关闭" value="6"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">查询</el-button>
+        <el-button type="primary" @click="onSearch">查询</el-button>
         <el-button type="primary" @click="onReset">重置</el-button>
         <el-button type="primary" @click="onAdd">添加</el-button>
       </el-form-item>
     </el-form>
     <el-table :data="taskData" style="width: 88%" height="580" class="taskTable">
-    <el-table-column fixed prop="createTime" label="发布时间" width="230" align="center">
+    <el-table-column fixed prop="createTime" label="发布时间" width="240" align="center">
     </el-table-column>
     <el-table-column prop="taskName" label="报修内容" width="120" align="center">
     </el-table-column>
@@ -90,10 +94,8 @@
       return {
         taskData: [],
         taskSearch:{
-          username:'',
-          phone:'',
-          userType:'',
-          gender:'',
+          placeType:'',
+          status:'',
           startTime:'',
           endTime:''
         },
@@ -192,6 +194,19 @@
             this.$message.error(res.data.msg)
           }
         })
+      },
+      //清空搜索条件
+      onReset(){
+        this.taskSearch.placeType ='';
+        this.taskSearch.status = '';
+        this.taskSearch.startTime = '';
+        this.taskSearch.endTime = '';
+      },
+      //确认搜索
+      onSearch() {
+        this.$axios.post('/propertyTask/list',this.taskSearch).then(res => {
+          this.taskData = res.data.data
+        })
       }
     }
   }
@@ -199,7 +214,12 @@
 <style>
   .taskTable{
     position: fixed;
-    top:15%;
+    top:17%;
     left: 8%;
+  }
+  .task-search{
+    position: fixed;
+    top:10%;
+    left:8%;
   }
 </style>
