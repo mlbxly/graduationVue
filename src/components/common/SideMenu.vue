@@ -34,6 +34,10 @@
         <i class="el-icon-s-grid"></i>
         <span slot="title">报修管理</span>
       </el-menu-item>
+      <el-menu-item index="task" v-bind:disabled="taskDisabled">
+        <i class="el-icon-s-order"></i>
+        <span slot="title">我的订单</span>
+      </el-menu-item>
     </el-menu>
   </div>
 </template>
@@ -57,10 +61,12 @@
              this.memberDisabled = false
              this.houseDisabled = false
              this.billDisabled = false
+             this.taskDisabled = true
            }else{
              this.memberDisabled = true
              this.houseDisabled = true
              this.billDisabled = true
+             this.taskDisabled = false
            }
          }else{
            this.$router.replace({path: '/login'})

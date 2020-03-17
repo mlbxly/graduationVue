@@ -51,7 +51,7 @@
   </el-table-column>
     <el-table-column prop="closeTime" label="关闭时间" width="120" align="center">
     </el-table-column>
-    <el-table-column fixed="right" label="操作" width="100">
+    <el-table-column fixed="right" label="操作" width="120">
       <template slot-scope="scope">
         <el-button @click="closeTask(scope.$index)" type="text" size="small" v-if="scope.row.status === '待处理'?true:false">关闭</el-button>
         <el-button type="text" size="small" v-if="scope.row.status === '待处理'?true:false" @click="receipt(scope.$index)">接单</el-button>

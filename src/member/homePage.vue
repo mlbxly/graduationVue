@@ -16,7 +16,7 @@
     <div class="gird-cont">
       <el-col :span="8">
         <el-card shadow="hover" class="member">
-          <i class="el-icon-user"></i>
+          <i class="el-icon-s-custom"></i>
           <div class="member-cont">住户总人数</div>
           <div class="member-num">{{memberNum}}</div>
         </el-card>
@@ -29,6 +29,25 @@
           <i class="el-icon-pie-chart"></i>
           <div class="work-cont">累计维修完成订单数</div>
           <div class="work-num">{{workNum}}</div>
+        </el-card>
+      </el-col>
+    </div>
+    <div class="gird-cont-two">
+      <el-col :span="8">
+        <el-card shadow="hover" class="no-work">
+          <i class="el-icon-error"></i>
+          <div class="no-work-cont">尚未处理的维修订单数</div>
+          <div class="no-work-num">{{noAcceptTask}}</div>
+        </el-card>
+        <el-card shadow="hover" class="property">
+          <i class="el-icon-user"></i>
+          <div class="property-cont">在职员工人数</div>
+          <div class="property-num">{{propertyNum}}</div>
+        </el-card>
+        <el-card shadow="hover" class="arrears">
+          <i class="el-icon-s-order"></i>
+          <div class="arrears-cont">本月违规用户处理次数</div>
+          <div class="arrears-num">{{violationNum}}</div>
         </el-card>
       </el-col>
     </div>
@@ -46,20 +65,30 @@
             illegals:'',
             memberNum:'',
             houseNum:'',
-            workNum:''
+            workNum:'',
+            noAcceptTask:'',
+            propertyNum:'',
+            violationNum:''
           }
       },
-      created() {
+        created() {
           this.$axios.post('/member/proportion').then(res=>{
             this.owners = res.data.data.owners
             this.tenants = res.data.data.tenants
             this.removes = res.data.data.removes
             this.illegals = res.data.data.illegals
-            this.memberNum = 1234
-            this.houseNum = 256
-            this.workNum = 2187;
           })
-      }
+        this.$axios.post('/member/sixTitle').then(res =>{
+          this.memberNum = res.data.data.memberNum
+          this.houseNum = res.data.data.homeNum
+          this.workNum = res.data.data.completeTask
+          this.noAcceptTask = res.data.data.noAcceptTask
+          this.propertyNum = res.data.data.propertyNum
+          this.violationNum = res.data.data.violationNum
+        })
+      },
+        mounted() {
+        }
     }
 </script>
 
@@ -69,12 +98,19 @@
     margin-left: 100px;
   }
 .gird-cont{
-  width:63%;
-  height: 100px;
-  position: absolute;
-  top:10%;
-  left:35%;
-}
+   width:63%;
+   height: 100px;
+   position: absolute;
+   top:11%;
+   left:35%;
+ }
+  .gird-cont-two{
+    width:63%;
+    height: 100px;
+    position: absolute;
+    top:32%;
+    left:35%;
+  }
   .member{
     height: 100px;
     width: 260px;
@@ -185,6 +221,120 @@
     font-size: 30px;
     font-weight: bold;
     color:rgb(242,94,67);
+    text-align: center;
+    position: absolute;
+    left: 40.5%;
+  }
+  .no-work{
+    height: 100px;
+    width: 260px;
+  }
+  .no-work i{
+    width:100px;
+    height: 100px;
+    font-size: 50px;
+    background: #990000;
+    color: #fff;
+    position: absolute;
+    top:0%;
+    left: 0%;
+    text-align: center;
+    line-height: 100px;
+  }
+  .no-work .no-work-cont {
+    width:160px;
+    height: 20px;
+    font-size: 14px;
+    color:#999;
+    text-align: center;
+    position: absolute;
+    bottom:25%;
+    left:10.5%;
+  }
+  .no-work-num{
+    width:160px;
+    height: 35px;
+    font-size: 30px;
+    font-weight: bold;
+    color:#990000 ;
+    text-align: center;
+    position: absolute;
+    left: 10.5%;
+  }
+  .property{
+    height: 100px;
+    width: 260px;
+    position: absolute;
+    left: 33%;
+    top:0%;
+  }
+  .property i{
+    width:100px;
+    height: 100px;
+    font-size: 50px;
+    background: #9900CC;
+    color: #fff;
+    position: absolute;
+    top:0%;
+    left: 0%;
+    text-align: center;
+    line-height: 100px;
+  }
+  .property-cont {
+    width:160px;
+    height: 20px;
+    font-size: 14px;
+    color:#999;
+    text-align: center;
+    position: absolute;
+    bottom:25%;
+    left:40.5%;
+  }
+  .property-num{
+    width:160px;
+    height: 35px;
+    font-size: 30px;
+    font-weight: bold;
+    color:rgb(45,140,240) ;
+    text-align: center;
+    position: absolute;
+    left: 40.5%;
+  }
+  .arrears{
+    height: 100px;
+    width: 260px;
+    position: absolute;
+    left: 67%;
+    top:0%;
+  }
+  .arrears i{
+    width:100px;
+    height: 100px;
+    font-size: 50px;
+    background:	#FF0000;
+    color: #fff;
+    position: absolute;
+    top:0%;
+    left: 0%;
+    text-align: center;
+    line-height: 100px;
+  }
+  .arrears-cont {
+    width:160px;
+    height: 20px;
+    font-size: 14px;
+    color:#999;
+    text-align: center;
+    position: absolute;
+    bottom:25%;
+    left:40.5%;
+  }
+  .arrears-num{
+    width:160px;
+    height: 35px;
+    font-size: 30px;
+    font-weight: bold;
+    color:	#FF0000;
     text-align: center;
     position: absolute;
     left: 40.5%;
