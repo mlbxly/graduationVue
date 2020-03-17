@@ -55,8 +55,11 @@
     </el-table-column>
     <el-table-column fixed="right" label="操作" width="100">
       <template slot-scope="scope">
-        <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-        <el-button type="text" size="small">编辑</el-button>
+        <el-button @click="closeTask(scope.$index)" type="text" size="small" v-if="scope.row.status === '待处理'?true:false">关闭</el-button>
+        <el-button type="text" size="small" v-if="scope.row.status === '待处理'?true:false" @click="receipt(scope.$index)">接单</el-button>
+        <el-button type="text" size="small" v-if="scope.row.status === '处理中'?true:false" @click="cancelReceipt(scope.$index)">取消接单</el-button>
+        <el-button type="text" size="small" v-if="scope.row.status === '处理中'?true:false" @click="complete(scope.$index)">完成</el-button>
+        <el-button type="text" size="small" v-if="scope.row.status === '待验收'?true:false" @click="acceptance(scope.$index)">验收</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -84,7 +87,10 @@
 </template>
 
 <script>
+  import ElButton from "../../node_modules/element-ui/packages/button/src/button.vue";
+
   export default {
+    components: {ElButton},
     name:'task',
     data() {
       return {
@@ -102,7 +108,7 @@
           taskName:'',
           placeType:'',
           place:''
-        }
+        },
       }
     },
     created() {
@@ -129,6 +135,67 @@
             window.location.reload();
           }else{
             this.$message.error(res.data.msg);
+          }
+        })
+      },
+      //维修工接单
+      receipt(index){
+        this.$axios.post('/propertyTask/receipt',this.taskData[index].taskId).then(res=>{
+          if(res.data.code == 0){
+            window.location.reload();
+          }else{
+            this.$message.error(res.data.msg)
+          }
+        })
+      },
+      //维修工取消接单
+      cancelReceipt(index){
+        this.$confirm('确定要取消该维修订单?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'primary'
+        }).then(()=> {
+          this.$axios.post('/propertyTask/cancelReceipt',this.taskData[index].taskId).then(res =>{
+            if(res.data.code == 0){
+              window.location.reload()
+            }else{
+              this.$message.error(res.data.msg)
+            }
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消操作'
+          })
+        })
+      },
+      //维修工完成订单
+      complete(index){
+        this.$axios.post('/propertyTask/complete',this.taskData[index].taskId).then(res =>{
+          if(res.data.code == 0){
+            window.location.reload()
+          }else{
+            this.$message.error(res.data.msg)
+          }
+        })
+      },
+      //关闭维修订单
+      closeTask(index){
+        this.$axios.post('/propertyTask/close',this.taskData[index].taskId).then(res =>{
+          if(res.data.code == 0){
+            window.location.reload()
+          }else{
+            this.$message.error(res.data.msg)
+          }
+        })
+      },
+      //验收订单
+      acceptance(index){
+        this.$axios.post('/propertyTask/acceptance',this.taskData[index].taskId).then(res =>{
+          if(res.data.code == 0){
+            window.location.reload()
+          }else{
+            this.$message.error(res.data.msg)
           }
         })
       }
