@@ -19,6 +19,8 @@
     <el-table-column prop="acceptanceName" label="验收人" width="120" align="center">
     </el-table-column>
     <el-table-column prop="completeTime" label="完成时间" width="120" align="center">
+  </el-table-column>
+    <el-table-column prop="closeTime" label="关闭时间" width="120" align="center">
     </el-table-column>
     <el-table-column fixed="right" label="操作" width="100">
       <template slot-scope="scope">
@@ -34,107 +36,13 @@
     name:'task',
     data() {
       return {
-        taskData: [{
-          createTime: '2016-05-03 12:00:00',
-          taskName: '窗纱破损',
-          placeType: '私人区域',
-          place: '1单元2层209室',
-          createName: '王小虎',
-          status: '待处理',
-          acceptName:'郭小宝',
-          acceptTime:'2016-05-03 13:00:00',
-          acceptanceName:'小马哥',
-          completeTime:'2016-05-03 15:00:00'
-        },{
-          createTime: '2016-05-03 12:00:00',
-          taskName: '窗纱破损',
-          placeType: '私人区域',
-          place: '1单元2层209室',
-          createName: '王小虎',
-          status: '待处理',
-          acceptName:'郭小宝',
-          acceptTime:'2016-05-03 13:00:00',
-          acceptanceName:'小马哥',
-          completeTime:'2016-05-03 15:00:00'
-        },{
-          createTime: '2016-05-03 12:00:00',
-          taskName: '我登记哈价格发手机号大客户',
-          placeType: '私人区域',
-          place: '1单元2层209室',
-          createName: '王小虎',
-          status: '待处理',
-          acceptName:'郭小宝',
-          acceptTime:'2016-05-03 13:00:00',
-          acceptanceName:'小马哥',
-          completeTime:'2016-05-03 15:00:00'
-        },{
-          createTime: '2016-05-03 12:00:00',
-          taskName: '窗纱破损',
-          placeType: '私人区域',
-          place: '1单元2层209室',
-          createName: '王小虎',
-          status: '待处理',
-          acceptName:'郭小宝',
-          acceptTime:'2016-05-03 13:00:00',
-          acceptanceName:'小马哥',
-          completeTime:'2016-05-03 15:00:00'
-        },{
-          createTime: '2016-05-03 12:00:00',
-          taskName: '窗纱破损',
-          placeType: '私人区域',
-          place: '1单元2层209室',
-          createName: '王小虎',
-          status: '待处理',
-          acceptName:'郭小宝',
-          acceptTime:'2016-05-03 13:00:00',
-          acceptanceName:'小马哥',
-          completeTime:'2016-05-03 15:00:00'
-        },{
-          createTime: '2016-05-03 12:00:00',
-          taskName: '窗纱破损',
-          placeType: '私人区域',
-          place: '1单元2层209室',
-          createName: '王小虎',
-          status: '待处理',
-          acceptName:'郭小宝',
-          acceptTime:'2016-05-03 13:00:00',
-          acceptanceName:'小马哥',
-          completeTime:'2016-05-03 15:00:00'
-        },{
-          createTime: '2016-05-03 12:00:00',
-          taskName: '窗纱破损',
-          placeType: '私人区域',
-          place: '1单元2层209室',
-          createName: '王小虎',
-          status: '待处理',
-          acceptName:'郭小宝',
-          acceptTime:'2016-05-03 13:00:00',
-          acceptanceName:'小马哥',
-          completeTime:'2016-05-03 15:00:00'
-        },{
-          createTime: '2016-05-03 12:00:00',
-          taskName: '窗纱破损',
-          placeType: '私人区域',
-          place: '1单元2层209室',
-          createName: '王小虎',
-          status: '待处理',
-          acceptName:'郭小宝',
-          acceptTime:'2016-05-03 13:00:00',
-          acceptanceName:'小马哥',
-          completeTime:'2016-05-03 15:00:00'
-        },{
-          createTime: '2016-05-03 12:00:00',
-          taskName: '窗纱破损',
-          placeType: '私人区域',
-          place: '1单元2层209室',
-          createName: '王小虎',
-          status: '待处理',
-          acceptName:'郭小宝',
-          acceptTime:'2016-05-03 13:00:00',
-          acceptanceName:'小马哥',
-          completeTime:'2016-05-03 15:00:00'
-        }]
+        taskData: []
       }
+    },
+    created() {
+      this.$axios.post('/propertyTask/list').then(res =>{
+        this.taskData = res.data.data
+      })
     }
   }
 </script>
