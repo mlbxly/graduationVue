@@ -51,6 +51,9 @@
         </el-card>
       </el-col>
     </div>
+    <div class="excellentWork">
+      <chart ref="chart1" :options="excellentOptions" :auto-resize="true"></chart>
+    </div>
   </div>
 </template>
 
@@ -68,7 +71,8 @@
             workNum:'',
             noAcceptTask:'',
             propertyNum:'',
-            violationNum:''
+            violationNum:'',
+            excellentOptions:{},
           }
       },
         created() {
@@ -78,7 +82,7 @@
             this.removes = res.data.data.removes
             this.illegals = res.data.data.illegals
           })
-        this.$axios.post('/member/sixTitle').then(res =>{
+           this.$axios.post('/member/sixTitle').then(res =>{
           this.memberNum = res.data.data.memberNum
           this.houseNum = res.data.data.homeNum
           this.workNum = res.data.data.completeTask
@@ -86,9 +90,48 @@
           this.propertyNum = res.data.data.propertyNum
           this.violationNum = res.data.data.violationNum
         })
+          this.$axios.post('/member/excellentName').then(res => {
+            this.excellentOptions.xAxis.data = res.data.data
+          })
+          this.$axios.post('/member/excellentNum').then(res => {
+            this.excellentOptions.series[0].data = res.data.data
+          })
       },
-        mounted() {
-        }
+      mounted() {
+          this.excellentOptions = {
+            color: ['#3398DB'],
+            xAxis: {
+              name: '员工',
+              type: 'category',
+              data: []
+            },
+            yAxis: {
+              type: 'value'
+            },
+            grid: {
+              y2:20,
+              x:15
+            },
+            series: [{
+              data: [],
+              type: 'bar',
+              barWidth : 28,
+              smooth: true,
+              itemStyle: {
+                normal: {
+                  label: {
+                    show: true, //开启显示
+                    position: 'top', //在上方显示
+                    textStyle: { //数值样式
+                      color: 'black',
+                      fontSize: 16
+                    }
+                  }
+                }
+              }
+            }]
+          }
+      }
     }
 </script>
 
