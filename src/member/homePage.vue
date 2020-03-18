@@ -52,7 +52,12 @@
       </el-col>
     </div>
     <div class="excellentWork">
+      <h2 class="excellentTitle">上<br/>月<br/>优<br/>秀<br/>员<br/>工</h2>
       <chart ref="chart1" :options="excellentOptions" :auto-resize="true"></chart>
+    </div>
+    <div class="completeTask">
+      <h2 class="completeTitle">近<br/>七<br/>天<br/>维<br/>修<br/>订<br/>单<br/>完<br/>成<br/>数</h2>
+      <chart ref="chart1" :options="completeTask" :auto-resize="true"></chart>
     </div>
   </div>
 </template>
@@ -73,6 +78,7 @@
             propertyNum:'',
             violationNum:'',
             excellentOptions:{},
+            completeTask:{}
           }
       },
         created() {
@@ -96,6 +102,12 @@
           this.$axios.post('/member/excellentNum').then(res => {
             this.excellentOptions.series[0].data = res.data.data
           })
+          this.$axios.post('/member/week').then(res => {
+            this.completeTask.xAxis.data = res.data.data
+          })
+          this.$axios.post('/member/completeTask').then(res => {
+            this.completeTask.series[0].data = res.data.data
+          })
       },
       mounted() {
           this.excellentOptions = {
@@ -106,6 +118,7 @@
               data: []
             },
             yAxis: {
+              name:'完成量',
               type: 'value'
             },
             grid: {
@@ -116,6 +129,37 @@
               data: [],
               type: 'bar',
               barWidth : 28,
+              smooth: true,
+              itemStyle: {
+                normal: {
+                  label: {
+                    show: true, //开启显示
+                    position: 'top', //在上方显示
+                    textStyle: { //数值样式
+                      color: 'black',
+                      fontSize: 16
+                    }
+                  }
+                }
+              }
+            }]
+          }
+          this.completeTask = {
+            xAxis: {
+              type: 'category',
+              data: []
+            },
+            yAxis: {
+              name:'完成量',
+              type: 'value'
+            },
+            grid: {
+              y2:40,
+              x:38
+            },
+            series: [{
+              data: [],
+              type: 'line',
               smooth: true,
               itemStyle: {
                 normal: {
@@ -381,5 +425,23 @@
     text-align: center;
     position: absolute;
     left: 40.5%;
+  }
+  .excellentWork{
+    position: fixed;
+    top:43%;
+  }
+  .excellentTitle{
+    position: fixed;
+    left:5%;
+    top:55%;
+  }
+  .completeTask{
+    position: fixed;
+    right: 10%;
+  }
+  .completeTitle{
+    position: fixed;
+    right:8%;
+    top:50%;
   }
 </style>
