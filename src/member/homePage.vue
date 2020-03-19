@@ -432,7 +432,7 @@
   }
   .excellentTitle{
     position: fixed;
-    left:5%;
+    left:3%;
     top:55%;
   }
   .completeTask{

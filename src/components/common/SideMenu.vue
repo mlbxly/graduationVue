@@ -34,7 +34,7 @@
         <i class="el-icon-s-grid"></i>
         <span slot="title">报修管理</span>
       </el-menu-item>
-      <el-menu-item index="task" v-bind:disabled="taskDisabled">
+      <el-menu-item index="myTask" v-bind:disabled="taskDisabled">
         <i class="el-icon-s-order"></i>
         <span slot="title">我的订单</span>
       </el-menu-item>

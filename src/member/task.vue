@@ -13,7 +13,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="状态">
-        <el-select v-model="taskSearch.status" placeholder="status">
+        <el-select v-model="taskSearch.status" placeholder="状态">
           <el-option label="待处理" value="1"></el-option>
           <el-option label="处理中" value="2"></el-option>
           <el-option label="待验收" value="3"></el-option>
