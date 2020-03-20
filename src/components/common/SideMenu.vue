@@ -4,6 +4,8 @@
     <div class="iconTitle">
       <el-button type="info" icon="el-icon-switch-button" circle style="font-size: 16px;background: #8697A7" @click="loginOut"></el-button>
       退出
+      <el-button type="info" icon="el-icon-menu" circle style="font-size: 16px;background: #8697A7"></el-button>
+      <a href="http://localhost:8091/xxl-job-admin">定时器管理</a>
     </div>
     <el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
              :collapse="true" theme="dark" :router=true :unique-opened="true">
@@ -105,7 +107,7 @@
   .topTitle {
     position: fixed;
     top:3.3%;
-    right:10.5%;
+    right:20%;
     font-size: 16px;
     line-height: 20px;
     color: #fff;
