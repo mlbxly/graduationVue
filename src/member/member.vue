@@ -11,6 +11,7 @@
         <el-select v-model="formInline.userType" placeholder="身份类型" style="width: 110px;">
           <el-option label="物业管理员" value="1"></el-option>
           <el-option label="普通员工" value="2"></el-option>
+          <el-option label="系统管理员" value="3"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="性别">
@@ -103,6 +104,7 @@
           <el-select v-model="propertyForm.userType" placeholder="请选择用户类型" style="width: 150px;">
             <el-option label="物业管理员" value="1"></el-option>
             <el-option label="普通员工" value="2"></el-option>
+            <el-option label="系统管理员" value="3"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="联系电话">

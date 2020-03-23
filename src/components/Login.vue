@@ -15,6 +15,7 @@
       <el-radio-group v-model="loginForm.identity">
         <el-radio label="1">物业管理员</el-radio>
         <el-radio label="2">普通员工</el-radio>
+        <el-radio label="3">系统管理员</el-radio>
       </el-radio-group>
     </el-form-item>
     <el-form-item style="width: 100%">

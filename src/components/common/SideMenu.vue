@@ -18,10 +18,10 @@
           <i class="el-icon-s-custom"></i>
           <span slot="title">人员管理</span>
         </template>
-        <el-menu-item index="/houseHold">住户管理</el-menu-item>
+        <el-menu-item index="/houseHold" v-bind:disabled="houseMemberDisabled">住户管理</el-menu-item>
         <el-menu-item-group title="人事管理">
-          <el-menu-item index="/member">在职人员管理</el-menu-item>
-          <el-menu-item index="/quitList">离职人员列表</el-menu-item>
+          <el-menu-item index="/member" v-bind:disabled="staffDisabled">在职人员管理</el-menu-item>
+          <el-menu-item index="/quitList" v-bind:disabled="quitDisabled">离职人员列表</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
       <el-menu-item index="house" v-bind:disabled="houseDisabled">
@@ -32,7 +32,7 @@
         <i class="el-icon-document"></i>
         <span slot="title">住户缴费账单信息管理</span>
       </el-menu-item>
-      <el-menu-item index="task">
+      <el-menu-item index="task" v-bind:disabled="taskListDisabled">
         <i class="el-icon-s-grid"></i>
         <span slot="title">报修管理</span>
       </el-menu-item>
@@ -52,6 +52,10 @@
           memberDisabled:false,
           houseDisabled:false,
           billDisabled:false,
+          houseMemberDisabled:false,
+          staffDisabled:false,
+          quitDisabled:false,
+          taskListDisabled:false,
           username:''
         }
       },
@@ -61,14 +65,31 @@
            this.username = res.data.data.username
            if(res.data.data.userType == 1){
              this.memberDisabled = false
+             this.houseMemberDisabled = false
+             this.staffDisabled = true
+             this.quitDisabled = false
              this.houseDisabled = false
              this.billDisabled = false
              this.taskDisabled = true
-           }else{
+             this.taskListDisabled = false
+           }else if(res.data.data.userType == 2){
              this.memberDisabled = true
+             this.houseMemberDisabled = true
+             this.staffDisabled = true
+             this.quitDisabled = true
              this.houseDisabled = true
              this.billDisabled = true
              this.taskDisabled = false
+             this.taskListDisabled = false
+           }else if(res.data.data.userType == 3){
+             this.memberDisabled = false
+             this.houseMemberDisabled = true
+             this.staffDisabled = false
+             this.quitDisabled = false
+             this.houseDisabled = true
+             this.billDisabled = true
+             this.taskDisabled = true
+             this.taskListDisabled = true
            }
          }else{
            this.$router.replace({path: '/login'})
