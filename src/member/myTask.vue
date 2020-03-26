@@ -32,7 +32,7 @@
     <el-table :data="myTaskData" style="width: 93%" class="myTask" height="580">
       <el-table-column prop="acceptTime" label="接单时间" width="180" align="center">
       </el-table-column>
-      <el-table-column prop="taskName" label="报修内容" width="130" align="center">
+      <el-table-column prop="taskName" label="服务内容" width="130" align="center">
       </el-table-column>
       <el-table-column prop="placeType" label="区域" width="120" align="center">
       </el-table-column>

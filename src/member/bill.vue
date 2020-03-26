@@ -28,7 +28,7 @@
         <el-table-column prop="payTime" label="缴纳时间" width="180" align="center"></el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
-            <el-button size="mini" type="primary" @click="handleConfirm(scope.$index)">支付</el-button>
+            <el-button size="mini" type="primary" @click="handleConfirm(scope.$index)">完成</el-button>
             <el-button size="mini" type="danger" @click="handleDelete(scope.$index)">删除</el-button>
           </template>
         </el-table-column>

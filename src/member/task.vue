@@ -31,7 +31,7 @@
     <el-table :data="taskData" style="width: 88%" height="580" class="taskTable">
     <el-table-column fixed prop="createTime" label="发布时间" width="240" align="center">
     </el-table-column>
-    <el-table-column prop="taskName" label="报修内容" width="120" align="center">
+    <el-table-column prop="taskName" label="服务内容" width="120" align="center">
     </el-table-column>
     <el-table-column prop="placeType" label="区域" width="120" align="center">
     </el-table-column>

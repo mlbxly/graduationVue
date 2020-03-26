@@ -14,7 +14,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="状态">
-        <el-select v-model="memberSearch.removed" placeholder="状态" style="width: 110px;">
+        <el-select v-model="memberSearch.status" placeholder="状态" style="width: 110px;">
           <el-option label="正常" value="1"></el-option>
           <el-option label="离开" value="2"></el-option>
           <el-option label="停水" value="3"></el-option>
@@ -43,7 +43,7 @@
          </el-table-column>
          <el-table-column prop="userType" label="住户类型" width="120" align="center">
          </el-table-column>
-         <el-table-column prop="removed" label="状态" width="120" align="center">
+         <el-table-column prop="status" label="状态" width="120" align="center">
          </el-table-column>
          <el-table-column prop="home" label="入住房间" width="180" align="center">
          </el-table-column>
@@ -131,7 +131,7 @@
             username: '',
             phone: '',
             userType: '',
-            removed: '',
+            status: '',
             startTime: '',
             endTime: ''
           },
@@ -316,7 +316,7 @@
           this.memberSearch.username = ''
           this.memberSearch.phone = ''
           this.memberSearch.userType = ''
-          this.memberSearch.removed = ''
+          this.memberSearch.status = ''
           this.memberSearch.startTime = ''
           this.memberSearch.endTime = ''
         },

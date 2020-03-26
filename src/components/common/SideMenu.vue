@@ -34,7 +34,7 @@
       </el-menu-item>
       <el-menu-item index="task" v-bind:disabled="taskListDisabled">
         <i class="el-icon-s-grid"></i>
-        <span slot="title">报修管理</span>
+        <span slot="title">服务管理</span>
       </el-menu-item>
       <el-menu-item index="myTask" v-bind:disabled="taskDisabled">
         <i class="el-icon-s-order"></i>
