@@ -79,7 +79,7 @@
           <el-input v-model="memberVo.phone" disabled="true"></el-input>
         </el-form-item>
         <el-form-item label="状态">
-          <el-input v-model="memberVo.removed" disabled="true"></el-input>
+          <el-input v-model="memberVo.status" disabled="true"></el-input>
         </el-form-item>
         <el-form-item label="入住时间">
           <el-input v-model="memberVo.createTime" disabled="true"></el-input>
@@ -124,7 +124,7 @@
         memberVo:{
           username: '',
           phone:'',
-          removed:'',
+          status:'',
           createTime:''
         },
         idx: -1,

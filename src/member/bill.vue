@@ -41,9 +41,9 @@
             </el-select>
           </el-form-item>
           <el-form-item label="账单周期">
-            <el-date-picker v-model="billForm.billStartTime" type="datetime" placeholder="选择日期时间" style="width: 192px;"></el-date-picker>
+            <el-date-picker v-model="billForm.billStartTime" type="datetime" placeholder="选择日期时间" style="width: 192px;" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
             -
-            <el-date-picker v-model="billForm.billEndTime" type="datetime" placeholder="选择日期时间" style="width: 192px;"></el-date-picker>
+            <el-date-picker v-model="billForm.billEndTime" type="datetime" placeholder="选择日期时间" style="width: 192px;" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
           </el-form-item>
           <el-form-item label="金额">
             <el-input v-model="billForm.money" style="width: 90%;"></el-input>
@@ -52,7 +52,7 @@
             <el-input v-model="billForm.remark" style="width: 90%;"></el-input>
           </el-form-item>
           <el-form-item label="应缴日期">
-            <el-date-picker v-model="billForm.deadline" type="datetime" placeholder="选择日期时间"></el-date-picker>
+            <el-date-picker v-model="billForm.deadline" type="datetime" placeholder="选择日期时间" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
           </el-form-item>
           <el-form-item size="large">
             <el-button type="primary" @click="onAddBill">添加</el-button>
